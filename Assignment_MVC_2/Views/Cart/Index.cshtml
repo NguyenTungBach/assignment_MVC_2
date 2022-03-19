@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Assignment_MVC_2.Models.CartItem>
 
 <p>
-    @Html.ActionLink("Thêm sản phẩm vào giỏ hàng", "Index","Products")
+    @Html.ActionLink("Thêm sản phẩm vào giỏ hàng", "Index", "Products")
 </p>
 
 @if (Model == null || Model.Count() == 0)
@@ -12,52 +12,91 @@
 }
 else
 {
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ProductName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Quantity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UnitPrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TotalPrice)
-            </th>
-            <th></th>
-        </tr>
-
-        @foreach (var item in Model)
-        {
+<table class="table">
     <tr>
-        <td>
-            <a href="@Url.Action("Details","Products",new { id = item.ProductId})">@item.ProductName</a>
-        </td>
-        <td>
-            <form action="@Url.Action("Edit")" method="get">
-                <input type="hidden" name="SanPhamID" value="@item.ProductId" />
-                <input type="number" min="1" step="1" name="soluongmoi" value="@item.Quantity" />
-                <button type="submit" onclick="return confirm('Bạn có chắc muốn sửa số lượng sản phẩm này?');" class="btn btn-primary btn-sm"> Cập nhật </button>
-            </form>
-        </td>
-        <td>
-            @item.UnitPrice.ToString("#,##0").Replace(',', ',') VNĐ
-        </td>
-        <td>
-            @item.TotalPrice.ToString("#,##0").Replace(',', ',') VNĐ
-        </td>
-        <td>
-            @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |*@
-            @*@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
-            @*@Html.ActionLink("Delete", "Delete", new { SanPhamID = item.ProductId /* id=item.PrimaryKey */ })*@
-            @*<a href="@Url.Action("Edit",new { SanPhamID = item.ProductId})" onclick="return confirm('Bạn có chắc sửa sản phẩm này?');" class="btn btn-warning btn-sm">Sửa</a>*@
-            <a href="@Url.Action("Delete",new { SanPhamID = item.ProductId})" onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?');" class="btn btn-danger btn-sm">Xóa</a>
-        </td>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UnitPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TotalPrice)
+        </th>
+        <th></th>
     </tr>
-        }
 
-    </table>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <a href="@Url.Action("Details","Products",new { id = item.ProductId})">@item.ProductName</a>
+            </td>
+            <td>
+                <form action="@Url.Action("Edit")" method="get">
+                    <input type="hidden" name="SanPhamID" value="@item.ProductId" />
+                    <span><button type="button" id="sub_quantity">-</button></span>
+                    <input type="number" min="1" step="1" name="soluongmoi" id="soluongmoi" value="@item.Quantity" />
+                    <span><button type="button" id="add_quantity">+</button></span>
+                    <button type="submit" onclick="return confirm('Bạn có chắc muốn sửa số lượng sản phẩm này?');" class="btn btn-primary btn-sm"> Cập nhật </button>
+                </form>
+            </td>
+            <td>
+                @item.UnitPrice.ToString("#,##0").Replace(',', ',') VNĐ
+            </td>
+            <td>
+                @item.TotalPrice.ToString("#,##0").Replace(',', ',') VNĐ
+            </td>
+            <td>
+                @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |*@
+                @*@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
+                @*@Html.ActionLink("Delete", "Delete", new { SanPhamID = item.ProductId /* id=item.PrimaryKey */ })*@
+                @*<a href="@Url.Action("Edit",new { SanPhamID = item.ProductId})" onclick="return confirm('Bạn có chắc sửa sản phẩm này?');" class="btn btn-warning btn-sm">Sửa</a>*@
+                <a href="@Url.Action("Delete",new { SanPhamID = item.ProductId})" onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?');" class="btn btn-danger btn-sm">Xóa</a>
+            </td>
+        </tr>
+    }
+    <tr>
+        <td class="text-right">Tổng số lượng:</td>
+        <td> @Model.Sum(m => m.Quantity) </td>
+        <td class="text-right">Tổng thành tiền:</td>
+        <td>@Model.Sum(m => m.TotalPrice).ToString("#,##0").Replace(',', '.') VNĐ </td>
+    </tr>
+
+</table>
 }
+
+@section scripts{
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            //$("input[name=searchString]").on("keyup change", function (e) {
+            //    $("#btnSubmit").click();
+            //})
+            $("#add_quantity").on("click", function (e) {
+                var soluong = $("#soluongmoi").val();
+                soluong++;
+                if (soluong >= 50 ) {
+                    alert("số lượng không được quá 50");
+                } else {
+                    $("#soluongmoi").val(soluong);
+                }
+            })
+
+            $("#sub_quantity").on("click", function (e) {
+                var soluong = $("#soluongmoi").val();
+                soluong--;
+                if (soluong <= 0) {
+                    alert("số lượng không được nhỏ hơn 0");
+                } else {
+                    $("#soluongmoi").val(soluong);
+                }
+            })
+        })
+    </script>
+}
+
 

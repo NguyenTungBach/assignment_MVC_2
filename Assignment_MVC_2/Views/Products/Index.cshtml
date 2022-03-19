@@ -77,12 +77,12 @@
             </td>
             <td>
                 @*@Html.ActionLink("Thêm vào giỏ", "Add", "Cart", new { SanPhamID = item.Id }, null) |*@
-                <a class="btn btn-success btn-sm" href="@Url.Action("Add", "Cart", new { SanPhamID = item.Id })"> 
-                    <span class="glyphicon glyphicon-shopping-cart"></span>  Thêm vào giỏ 
+                <a class="btn btn-success btn-sm" href="@Url.Action("Add", "Cart", new { SanPhamID = item.Id })">
+                    <span class="glyphicon glyphicon-shopping-cart"></span>  Thêm vào giỏ
                 </a> |
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                 @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
             </td>
         </tr>
     }
