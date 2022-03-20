@@ -10,6 +10,7 @@ namespace Assignment_MVC_2.Controllers
     {
         public ActionResult Index()
         {
+
             return View();
         }
 

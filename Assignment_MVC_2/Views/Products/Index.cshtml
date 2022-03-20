@@ -7,8 +7,8 @@
 <h2>Index</h2>
 
 @*<p>
-    @Html.ActionLink("Create New", "Create")
-</p>*@
+        @Html.ActionLink("Create New", "Create")
+    </p>*@
 
 @using (Ajax.BeginForm("IndexAjax", "Products",
                 new AjaxOptions
@@ -20,29 +20,17 @@
                     UpdateTargetId = "results",
                 }))
 {
-<div style="margin-bottom:10px">
-    Tìm theo danh mục
-    <select name="categoryId" id="categoryId">
-        <option value=-1>Chọn danh mục</option>
-        @foreach (var category in ViewBag.ListCategory)
-        {
-            <option value=@category.Id>@category.CategoryName</option>
-        }
-    </select>
-    <input type="submit" value="Search" id="findCategory" style="display:none"/>
-</div>
-}
-
-@using (Ajax.BeginForm("IndexAjax", "Products",
-                new AjaxOptions
-                {
-                    InsertionMode = InsertionMode.Replace,
-                    HttpMethod = "Get",
-                    OnFailure = "failed",
-                    LoadingElementId = "ajax-loader",
-                    UpdateTargetId = "results",
-                }))
-{
+    <div style="margin-bottom:10px">
+        Tìm theo danh mục
+        <select name="categoryId" id="categoryId">
+            <option value=-1>Chọn danh mục</option>
+            @foreach (var category in ViewBag.ListCategory)
+            {
+                <option value=@category.Id>@category.CategoryName</option>
+            }
+        </select>
+        @*<input type="submit" value="Search" id="findCategory" style="display:none" />*@
+    </div>
     <p>
         Tìm theo tên: @Html.TextBox("searchString")
         <input type="submit" value="Search" id="btnSubmit" />
@@ -81,8 +69,8 @@
                     <span class="glyphicon glyphicon-shopping-cart"></span>  Thêm vào giỏ
                 </a> |
                 @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
             </td>
         </tr>
     }
@@ -92,13 +80,13 @@
 @section scripts{
     <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
     <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                //$("input[name=searchString]").on("keyup change", function (e) {
-                //    $("#btnSubmit").click();
-                //})
-                $("#categoryId").on("change", function (e) {
-                    $("#findCategory").click();
-                })
+        document.addEventListener("DOMContentLoaded", function () {
+            //$("input[name=searchString]").on("keyup change", function (e) {
+            //    $("#btnSubmit").click();
+            //})
+            $("#categoryId").on("change", function (e) {
+                $("#btnSubmit").click();
             })
-        </script>
+        })
+    </script>
 }

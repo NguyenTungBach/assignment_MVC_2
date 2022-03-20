@@ -25,49 +25,26 @@ namespace Assignment_MVC_2.Controllers
 
         public ActionResult IndexAjax()
         {
-            var product = db.Product.AsQueryable();
-            if (Request.QueryString["searchString"] != null)
-            {
-                string searchString = this.Request.QueryString["searchString"];
-                if (!String.IsNullOrEmpty(searchString)) // tìm theo categoryName
-                {
-                    product = product.Where(s => s.ProductName.Contains(searchString));
-                }
-                else
-                {
-                    product = db.Product.Include(p => p.Category);
-                }
-            }
+            string searchString = this.Request.QueryString["searchString"];
+            int categoryId = int.Parse(this.Request.QueryString["categoryId"]);
+            var products = db.Product.AsQueryable();
             if (Request.QueryString["categoryId"] != null)
             {
-                int categoryId = int.Parse(this.Request.QueryString["categoryId"]);
-                if (categoryId != -1) // tìm theo categoryName
+                if (categoryId != -1)
                 {
-                    product = product.Where(s => s.CategoryId == categoryId);
-                }
-                else
-                {
-                    product = db.Product.Include(p => p.Category);
+                    products = products.Where(s => s.CategoryId.Equals(categoryId) ).Include(p => p.Category);
                 }
             }
-            
-            //if (String.IsNullOrEmpty(searchString) && categoryId != -1) // tìm theo categoryName
-            //{
-            //    product = product.Where(s => s.CategoryId == categoryId);
-            //}
-            //if (!String.IsNullOrEmpty(searchString) && categoryId == -1) // tìm theo searchString
-            //{
-            //    product = product.Where(s => s.ProductName.Contains(searchString));
-            //}
-            //if (!String.IsNullOrEmpty(searchString) && categoryId != -1) // tìm theo searchString và categoryName
-            //{
-            //    product = product.Where(s => s.ProductName.Contains(searchString) && s.CategoryId == categoryId);
-            //}
-            //if (String.IsNullOrEmpty(searchString) && categoryId == -1) // categoryName và searchString rỗng
-            //{
-            //    product = db.Product.Include(p => p.Category);
-            //}
-            return PartialView("IndexAjax",product.ToList());
+
+            if (Request.QueryString["searchString"] != null)
+            {
+                if (!String.IsNullOrEmpty(searchString))
+                {
+                    products = products.Where(s => s.ProductName.Contains(searchString)).Include(p => p.Category);
+                }
+            }
+
+            return PartialView("IndexAjax", products.ToList());
         }
 
         // GET: Products/Details/5
