@@ -1,0 +1,106 @@
+﻿@model Assignment_MVC_2.Models.ShopingCart
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@if (Model.listCartItem == null || Model.listCartItem.Count() == 0)
+{
+    <p class="text-info text-center">
+        Giỏ hàng của bạn rỗng!
+    </p>
+}
+else
+{
+    <table class="table">
+        <tr>
+            <th>
+                ProductName
+            </th>
+            <th>
+                Quantity
+            </th>
+            <th>
+                UnitPrice
+            </th>
+            <th>
+                TotalPrice
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.listCartItem)
+        {
+            <tr>
+                <td>
+                    <a href="@Url.Action("Details","Products",new { id = item.ProductId})">@item.ProductName</a>
+                </td>
+                <td>
+                    @item.Quantity
+                </td>
+                <td>
+                    @item.UnitPrice.ToString("#,##0").Replace(',', ',') VNĐ
+                </td>
+                <td>
+                    @item.TotalPrice.ToString("#,##0").Replace(',', ',') VNĐ
+                </td>
+            </tr>
+        }
+        <tr>
+            <td class="text-right">Tổng số lượng:</td>
+            <td> @Model.listCartItem.Sum(m => m.Quantity) </td>
+            <td class="text-right">Tổng thành tiền:</td>
+            <td>@Model.listCartItem.Sum(m => m.TotalPrice).ToString("#,##0").Replace(',', '.') VNĐ </td>
+        </tr>
+    </table>
+}
+
+@using (Html.BeginForm("Checkout","ShopingCart",FormMethod.Get))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>ShopingCart</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.ShipName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ShipName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ShipName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ShipAddress, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ShipAddress, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ShipAddress, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ShipPhone, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ShipPhone, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ShipPhone, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Xác nhận mua giỏ hàng" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Quay về danh sách sản phẩm", "Index","Products")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

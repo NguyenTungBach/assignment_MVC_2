@@ -1,0 +1,78 @@
+﻿@model Assignment_MVC_2.Models.ShopingCart
+@{
+    ViewBag.Title = "Checkout";
+}
+
+<table class="table">
+    <tr>
+        <th>
+            ProductName
+        </th>
+        <th>
+            Quantity
+        </th>
+        <th>
+            UnitPrice
+        </th>
+        <th>
+            TotalPrice
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.listCartItem)
+    {
+        <tr>
+            <td>
+                <a href="@Url.Action("Details","Products",new { id = item.ProductId})">@item.ProductName</a>
+            </td>
+            <td>
+                @item.Quantity
+            </td>
+            <td>
+                @item.UnitPrice.ToString("#,##0").Replace(',', ',') VNĐ
+            </td>
+            <td>
+                @item.TotalPrice.ToString("#,##0").Replace(',', ',') VNĐ
+            </td>
+        </tr>
+    }
+    <tr>
+        <td class="text-right">Tổng số lượng:</td>
+        <td> @Model.listCartItem.Sum(m => m.Quantity) </td>
+        <td class="text-right">Tổng thành tiền:</td>
+        <td>@Model.listCartItem.Sum(m => m.TotalPrice).ToString("#,##0").Replace(',', '.') VNĐ </td>
+    </tr>
+</table>
+
+<div class="form-horizontal">
+    <h4>ShopingCart</h4>
+    <hr />
+    <div class="form-group">
+        @Html.LabelFor(model => model.ShipName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Model.ShipName
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ShipAddress, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Model.ShipAddress
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ShipPhone, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Model.ShipPhone
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <h2>Giỏ hàng đã được xác nhận,  @Html.ActionLink("Mời bạn mua tiếp", "Index", "Products")</h2>
+        </div>
+    </div>
+</div>
+

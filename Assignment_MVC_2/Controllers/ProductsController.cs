@@ -26,18 +26,6 @@ namespace Assignment_MVC_2.Controllers
         public ActionResult IndexAjax()
         {
             var product = db.Product.AsQueryable();
-            if(Request.QueryString["categoryId"] != null)
-            {
-                int categoryId = int.Parse(this.Request.QueryString["categoryId"]);
-                if (categoryId != -1) // tìm theo categoryName
-                {
-                    product = product.Where(s => s.CategoryId == categoryId);
-                }
-                else
-                {
-                    product = db.Product.Include(p => p.Category);
-                }
-            }
             if (Request.QueryString["searchString"] != null)
             {
                 string searchString = this.Request.QueryString["searchString"];
@@ -50,8 +38,19 @@ namespace Assignment_MVC_2.Controllers
                     product = db.Product.Include(p => p.Category);
                 }
             }
-
-
+            if (Request.QueryString["categoryId"] != null)
+            {
+                int categoryId = int.Parse(this.Request.QueryString["categoryId"]);
+                if (categoryId != -1) // tìm theo categoryName
+                {
+                    product = product.Where(s => s.CategoryId == categoryId);
+                }
+                else
+                {
+                    product = db.Product.Include(p => p.Category);
+                }
+            }
+            
             //if (String.IsNullOrEmpty(searchString) && categoryId != -1) // tìm theo categoryName
             //{
             //    product = product.Where(s => s.CategoryId == categoryId);

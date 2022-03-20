@@ -157,6 +157,7 @@
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
+    <Compile Include="Controllers\ShopingCartController.cs" />
     <Compile Include="Data\ShopContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -225,6 +226,9 @@
     <Content Include="Views\Products\Index.cshtml" />
     <Content Include="Views\Products\IndexAjax.cshtml" />
     <Content Include="Views\Cart\Index.cshtml" />
+    <Content Include="Views\ShopingCart\Index.cshtml" />
+    <Content Include="Views\ShopingCart\Create.cshtml" />
+    <Content Include="Views\ShopingCart\Checkout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
